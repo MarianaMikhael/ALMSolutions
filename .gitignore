@@ -1,0 +1,9 @@
+*.pyc
+*~
+*.sqlite3
+*.idea
+.env
+.vscode
+migrations
+__pycache__
+venv

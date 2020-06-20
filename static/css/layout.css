@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html {
+  height: 100%;
+}
+
+body {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+b {
+  font-weight: bold;
+}
+
+
+/*--------------------------------------Botão Flutuante------------------------------------*/
+.btn-float {
+  color: #fff !important;
+  display: block;
+  text-align: center;
+  position: fixed;
+  right: 1%;
+  z-index: 799;
+  width: 54px;
+  height: 54px;
+  line-height: 44px;
+  border: 5px solid;
+  border-radius: 50%;
+  background: linear-gradient(100deg, #0033FF, #81D4FA, #0033FF);
+  background-size: 1000% 1000% !important;
+  -webkit-animation: changeColors 30s ease infinite;
+  -moz-animation: changeColors 30s ease infinite;
+  -o-animation: changeColors 30s ease infinite;
+  animation: changeColors 30s ease infinite;
+}
+
+@-webkit-keyframes changeColors {
+  0% {
+      background-position: 0 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0 50%;
+  }
+}
+
+@keyframes changeColors {
+  0% {
+      background-position: 0 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0 50%;
+  }
+}
+
+#seta-topo {
+  bottom: 10px;
+}
+
+/* #home,
+#return {
+  bottom: 90px;
+} */
+
+#novo-evento {
+  bottom: 50px;
+}
+
+
+/*------------------------------------------Navbar------------------------------------------*/
+nav#navbar-default {
+  background-color: rgba(27, 38, 49, 0.7);
+}
+nav#navbar-default p {
+  color: white;
+  margin: 0;
+  position: center;
+}
+nav#navbar-default a {
+  color: #3366FF;
+  font-size: 11px;
+  margin: 0 0 0 5px;
+  text-transform: uppercase;
+}
+.navbar-brand {
+  font-size: 22px;
+}
+.navbar-text {
+  height: 43px;
+  font-size: 14px;
+}
+.navbar-toggler {
+  width: auto;
+}
+.navbar-toggler:hover {
+  background: none;
+}
+
+
+/*------------------------------------Container Page-Into-----------------------------------*/
+#content-page {
+  padding-block-start: 69px;
+  padding-bottom: 1%;
+}
+
+
+/*------------------------------------------Footer------------------------------------------*/
+.footer {
+  padding-top: 1%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+  font-size: 10px;
+  color: #0c0c0c;
+}
+
+
+/*----------------------------------------Login Card----------------------------------------*/
+.card-login {
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  width: 300px;
+  border: 1 none;
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+
+  box-shadow: 0 0 15px 1px rgba(0,0,0, 0.4);
+  padding: 20px 30px;
+
+  box-sizing: border-box;
+  margin: 3% auto;
+}
+
+.card{
+  margin-top: 150px;
+  height: auto;
+  background-color:white !important;
+}
+
+.card-header {
+  background-color:white !important;
+}
+
+.input-group-prepend span{
+width: 40px;
+background-color: #40e0d0;
+color: white;
+border: 0 !important;
+}
+
+input:focus{
+  outline: 0 0 0 0  !important;
+  box-shadow: 0 0 0 0 !important;
+}
+
+.login_btn{
+  color: white;
+  background-color: #B2BABB;
+  width: 240px;
+}
+
+.login_btn:hover{
+  color: white;
+  background-color: #707B7C;
+}
+
+
+/*----------------------------------------Events List---------------------------------------*/
+.row-striped:nth-of-type(odd){
+  background-color: #efefef;
+  border-left: 4px #000000 solid;
+}
+
+.row-striped:nth-of-type(even){
+  background-color: #ffffff;
+  border-left: 4px #efefef solid;
+}
+
+.row-striped {
+    padding: 15px 0;
+}

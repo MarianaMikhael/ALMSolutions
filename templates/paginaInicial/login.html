@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+<!--
+
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<button id="g-auth-btn">Sign in with <b>Google</b></button>
+<script>
+function startApp() {
+    gapi.load('auth2', function(){
+        auth2 = gapi.auth2.init({
+            client_id: '{{ client_id }}',
+            cookiepolicy: 'single_host_origin',
+        });
+    });
+}
+
+$(document).on("click", "#g-auth-btn", ()=>{
+    auth2.grantOfflineAccess({
+        prompt:"consent",
+        scope: '{{ scopes }}'
+    }).then((signInCallback)=>{
+        $.ajax({
+            type:'post',
+            data:signInCallback,
+            cache: false,
+            headers: {"X-CSRFToken": $.cookie('csrftoken')},
+            success: function (response) {
+                console.log(response);
+                if(!!response.redirect){
+                    window.location = response.redirect
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                if(!!error.responseJSON.redirect){
+                    window.location = error.responseJSON.redirect
+                }
+            }
+        });
+    });
+});
+startApp();
+</script>
+
+-->
+
+{% block links %}
+    <!--User / Key Button-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+          crossorigin="anonymous">
+{% endblock %}
+
+
+{% block title %}
+    ALMSolutions | Login
+{% endblock %}
+
+<div class="container-fluid " id="content-page">
+    {% block main %}
+
+        <!-- Login Card -->
+        <div class="d-flex justify-content-center h-100">
+            <div class="login-login">
+
+                <div class="card-header">
+                    <img src="{% static 'images/logoValeVerde.png' %}" alt="signin">
+                </div>
+
+                <div class="card-body">      
+                    <form method="POST" action="{% url 'login' %}" id="form_login" class="mx-auto">
+                        {% include "includes/form_group.html" with form=form %}
+                        
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input id="id_username" name="username" type="text" class="form-control" placeholder="Username"/>
+                        </div>
+
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input id="id_password" name="password" type="password" class="form-control" placeholder="Password"/>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Login" class="btn float-right login_btn text-uppercase"/>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </div>
+
+                    </form>                         
+                </div>
+
+            </div>
+        </div>
+        <!-- Login Card -->
+
+    {% endblock %}
+</div>

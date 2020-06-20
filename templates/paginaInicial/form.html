@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}
+    ALMSolutions | Eventos
+{% endblock %}
+
+{% block main %}
+
+<form method="POST" action="{% url 'create' %}" id="form_event" class="mx-auto">
+    {% csrf_token %}
+    <div class = "container">
+        <ul>
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+            <li> summary: {{ form.summary }} </li>
+            <li> location: {{ form.location }} </li>
+            <li> description: {{ form.description }} </li>
+            <li> start: {{ form.start }} </li>
+            <li> end: {{ form.end }} </li>
+            <li> attendees: {{ form.email }} </li>
+            {{form.event_id.as_hidden}}
+
+        </ul>
+        <button class="btn btn-primary" type="submit" value="Save">Submit</button>
+        <!--<button class="btn btn-primary" type="submit" value="Save">Submit</button>-->
+    </div>
+</form>
+
+<!-- Libraries for datapicker -->
+<script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.0.1/js/bootstrap-datetimepicker.min.js" type=" text/javascript"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.0.1/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+
+    <script>
+        $('#id_start').datetimepicker(
+        {format: 'YYYY-MM-DD HH:mm:ss'
+        });
+        $('#id_end').datetimepicker(
+        {format: 'YYYY-MM-DD HH:mm:ss'
+        });
+    </script>
+
+
+
+{% endblock %}

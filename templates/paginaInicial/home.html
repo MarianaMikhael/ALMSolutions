@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}
+    ALMSolutions | Eventos
+{% endblock %}
+
+
+{% block main %}
+    <div class="container-sm" id="content-page">
+
+        {% for event in events.items %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col-2">DIA</th>
+                        <th scope="col-auto"><strong>{{ event.summary }}</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">MÊS</th>
+                            <td>
+                                <div class="row">
+                                    <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
+                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Start: {{event.start.dateTime}} - End: {{ event.end.dateTime }}</span></div>
+                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i>{{ event.locale }}</div>
+                                </div>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">Última ALteração: {{ event.updated }}</li>
+                                    <BR>
+                                    <li class="list-inline-item">Organizador(a): {{ event.organizer.email }}</li>
+                                    <BR>
+                                    <li class="list-inline-item">
+                                        Convidado(s):
+                                        {% for convidado in event.attendees %}
+                                            {{ convidado.email }};
+                                        {% endfor %}
+                                    </li>
+                                </ul>
+                            </td>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        {% endfor %}
+    
+        <!--Botão de Cadastro-->
+        <a href={% url 'create' %} class="btn-float" id="novo-evento">
+            <i class="fa fa-plus"></i>
+        </a>
+
+        <!--Seta Topo-->
+        {% include 'includes/seta-topo.html' %}
+
+    </div><!--/content-page-->
+{% endblock %}

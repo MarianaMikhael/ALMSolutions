@@ -16,14 +16,14 @@
             {{ form.errors }}
             {{ form.non_field_errors }}
             <li> summary: {{ form.summary }} </li>
-            <li> location: {{ form.location }} </li>
-            <li> description: {{ form.description }} </li>
             <li> start: {{ form.start }} </li>
             <li> end: {{ form.end }} </li>
+            <li> location: {{ form.location }} </li>
+            <li> description: {{ form.description }} </li>
             <li> attendees: {{ form.email }} </li>
-            {{form.event_id.as_hidden}}
-
-        </ul>
+            <li> valor: {{ form.valor }} </li>
+            {{form.uidd.as_hidden}}
+         </ul>
         <button class="btn btn-primary" type="submit" value="Save">Submit</button>
         <!--<button class="btn btn-primary" type="submit" value="Save">Submit</button>-->
     </div>

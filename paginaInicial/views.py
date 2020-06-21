@@ -151,7 +151,7 @@ def sent_to_API(request, summary, location, description, start_time1, end_time1,
     service.events().insert(calendarId=calendar_id, sendNotifications=True, body=event).execute()
 
 
-def create(request, template_name='paginaInicial/form.html'):
+def create(request, template_name='paginaInicial/post_events_form.html'):
     """ Function which add new record to database and to google calendar"""
     form = PostForm(request.POST or None)
     if form.is_valid():
@@ -164,9 +164,9 @@ def create(request, template_name='paginaInicial/form.html'):
         
         sent_to_API(request, summary, location, description, start_time1, end_time1, email)
 
-        """ assign event id to event_id filed"""
+        """ assign event id to uidd filed"""
         replace = form.save(commit=False)
-        replace.event_id = get_event_id(request)
+        replace.uidd = get_event_id(request)
         replace.save()
         form.save()
         return redirect('events_list')
@@ -184,8 +184,8 @@ def get_event_id(request):
     # calendar_id = result['items'][0]['id']
     # result = service.events().list(calendarId=calendar_id, maxResults=2400).execute()
     # table_size = len(result['items'])
-    # event_id = result['items'][table_size - 1]['id']
-    # return event_id
+    # uidd = result['items'][table_size - 1]['id']
+    # return uidd
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -211,9 +211,9 @@ def get_event_id(request):
     calendar_id = result['items'][0]['id']
     result = service.events().list(calendarId=calendar_id, maxResults=2400).execute()
     table_size = len(result['items'])
-    event_id = result['items'][table_size - 1]['id']
+    uidd = result['items'][table_size - 1]['id']
     
-    return event_id
+    return uidd
 
 
 # Make sure that the request is from who we think it is

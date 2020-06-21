@@ -17,7 +17,7 @@ from oauth2client import client, file
 from decouple import config
 
 from paginaInicial.forms.login_form import UserLogin
-from paginaInicial.forms.post_form import PostForm
+from paginaInicial.forms.post_events_form import PostForm
 
 logger = logging.getLogger(__name__)
 

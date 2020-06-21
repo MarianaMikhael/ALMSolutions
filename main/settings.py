@@ -156,3 +156,5 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
 GOOGLE_OAUTH2_CLIENT_ID = config('google_client_id')
 GOOGLE_OAUTH2_CLIENT_SECRET =  config('google_client_secret')
+
+SITE_ID = 1

@@ -1,5 +1,5 @@
 from django import forms
-from paginaInicial.models.post import Post
+from paginaInicial.models.post_events import Post
 
 class PostForm(forms.ModelForm):
     class Meta:

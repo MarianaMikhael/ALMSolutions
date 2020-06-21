@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from paginaInicial.models.login import User
-from paginaInicial.models.post import Post
+from paginaInicial.models.post_events import Post
 
 
 class UserAdmin(admin.ModelAdmin):

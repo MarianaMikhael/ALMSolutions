@@ -25,12 +25,10 @@
                             <td>
                                 <div class="row">
                                     <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
-                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Start: {{event.start.dateTime}} - End: {{ event.end.dateTime }}</span></div>
-                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i>{{ event.locale }}</div>
+                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span> Start: {{ event.start.dateTime }} - End: {{ event.end.dateTime }}</span></div>
+                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{ event.location }}</div>
                                 </div>
                                 <ul class="list-inline">
-                                    <li class="list-inline-item">Última ALteração: {{ event.updated }}</li>
-                                    <BR>
                                     <li class="list-inline-item">Organizador(a): {{ event.organizer.email }}</li>
                                     <BR>
                                     <li class="list-inline-item">
@@ -38,6 +36,9 @@
                                         {% for convidado in event.attendees %}
                                             {{ convidado.email }};
                                         {% endfor %}
+                                    </li>
+                                    <BR>
+                                        <li class="list-inline-item">Descrição: {{ event.description }}</li>
                                     </li>
                                 </ul>
                             </td>

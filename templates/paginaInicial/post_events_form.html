@@ -9,7 +9,7 @@
 
 {% block main %}
 
-<form method="POST" action="{% url 'create' %}" id="form_event" class="mx-auto">
+<form method="POST" id="form_event" class="mx-auto">
     {% csrf_token %}
     <div class = "container">
         <ul>

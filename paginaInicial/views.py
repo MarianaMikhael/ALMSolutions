@@ -7,7 +7,7 @@ import httplib2
 from datetime import datetime
 from django.contrib.auth import authenticate, login#, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import (
     HttpResponse, HttpResponseBadRequest, HttpResponseRedirect)
@@ -16,6 +16,7 @@ from oauth2client.contrib import xsrfutil
 from oauth2client import client, file
 from decouple import config
 
+from paginaInicial.models.post_events import Post
 from paginaInicial.forms.login_form import UserLogin
 from paginaInicial.forms.post_events_form import PostForm
 
@@ -81,14 +82,16 @@ def events_list(request):
     
         return HttpResponseRedirect(authorize_url)
 
-    #now = datetime.now()
     http = httplib2.Http()
     http = credentials.authorize(http)
     service = build('calendar', 'v3', http=http)
     events = service.events()
     event_list = events.list(
         calendarId='primary',
-        #timeMin=now, maxResults=15, singleEvents=True,orderBy='startTime'
+        #timeMin=now,
+        #maxResults=15,
+        singleEvents=True,
+        #orderBy='startTime',
         ).execute()
 
     return render(request, 'paginaInicial/home.html', {'events': event_list})
@@ -172,6 +175,72 @@ def create(request, template_name='paginaInicial/post_events_form.html'):
         return redirect('events_list')
 
     return render(request, template_name, {'form': form})
+
+
+# -------------------------------------------------> Edit Event
+
+def edit_to_API(request, summary, location, description, start_time1, end_time1, email, uidd):
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                'calendar-python-quickstart.json')
+    
+    store = file.Storage(credential_path)
+    credentials = store.get()        
+    if not credentials or credentials.invalid is True:
+        flow = get_flow(request)
+        flow.params['state'] = xsrfutil.generate_token(config('SECRET_KEY'),
+                                                    request.user)
+        request.session['flow'] = pickle.dumps(flow).decode('iso-8859-1')
+        authorize_url = flow.step1_get_authorize_url()
+    
+        return HttpResponseRedirect(authorize_url)
+
+    service = build("calendar", "v3", credentials=credentials)    
+    result = service.calendarList().list().execute()
+    calendar_id = result['items'][0]['id']
+    
+    timezone = 'Brazil/East'
+    eventStartDate = convertToRFC3339DatetimeFormat(start_time1)
+    eventEndDate = convertToRFC3339DatetimeFormat(end_time1)  
+    
+    event = {
+        'summary': summary,
+        'location': location,
+        'description': description,
+        'start': {
+            'dateTime': eventStartDate,
+            'timeZone': timezone,
+        },
+        'end': {
+            'dateTime': eventEndDate,
+            'timeZone': timezone,
+        },
+        'reminders': {
+            'useDefault': False,
+            'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+            ],
+        },
+        'attendees': [
+            {'email': email},
+        ],
+    }
+    service.events().update(calendarId=calendar_id, eventId=uidd, body=event).execute()
+
+
+def update(request, uidd, template_name='paginaInicial/post_events_form.html'):
+    calendar = get_object_or_404(id=uidd)
+    form = PostForm(request.POST or None, instance=calendar)
+    if form.is_valid():
+        edit_to_API(request, calendar.summary, calendar.location, calendar.description, calendar.start, calendar.end, calendar.email, calendar.uidd)
+        form.save()
+        return redirect('events_list')
+    
+    return render(request, template_name, {'form': form, 'calendar': calendar})
 
 
 # -------------------------------------------------> Utils

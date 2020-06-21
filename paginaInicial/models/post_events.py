@@ -9,7 +9,7 @@ from calendario.models import fornecedores
 
 
 class Post(models.Model):
-    tipo_evento = (
+    opcao_evento = (
         ('Aniversario', 'Aniversário'),
         ('Casamento', 'Casamento'),
         ('Confrat', 'Confraternização'),
@@ -29,10 +29,10 @@ class Post(models.Model):
     ]
 
     opcao_status = (
-        ('', 'Aguardando Confirmação de Contrato'),
-        ('', 'Cancelado'),
-        ('', 'Contrato Confirmado'),
-        ('', 'Realizado'),
+        ('Aguardando Conf.', 'Aguardando Confirmação de Contrato'),
+        ('Cancelado', 'Cancelado'),
+        ('Contrato Confirmado', 'Contrato Confirmado'),
+        ('Realizado', 'Realizado'),
     )
 
     uidd = models.CharField("Event ID", max_length=100, null=True, default='N/A')  # event id from google calendar
@@ -40,6 +40,12 @@ class Post(models.Model):
     start = models.DateTimeField("De", default=datetime.now, null=True)  # start event date
     end = models.DateTimeField("Até", default=datetime.now, null=True)  # end event date default=datetime.now
     location = models.CharField("Localização", max_length=500, null=True)
+    event_type = models.CharField(max_length=40, choices=opcao_evento, default='',
+        verbose_name='Tipo de Evento')
+    service_option = models.CharField(max_length=40, choices=opcao_servico, default='',
+        verbose_name='Opções de Serviço')
+    status = models.CharField(max_length=40, choices=opcao_status, default='',
+        verbose_name='Status de Confirmação')
     description = models.CharField("Descrição(ões) Adicional(ais)", max_length=500, null=True)
     email = models.EmailField(_('Convidado'), max_length=255,
         validators=[
@@ -49,6 +55,3 @@ class Post(models.Model):
         verbose_name='Valor Total do Evento')
     # fk_Fornecedor = models.ManyToManyField(fornecedores.t_fornecedor, blank=False,
     #     verbose_name="Fornecedor")
-
-    def __str__(self):
-        return self.summary

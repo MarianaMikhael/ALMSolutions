@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}
+    ALMSolutions | Eventos
+{% endblock %}
+
+
+{% block main %}
+<div class="container-sm" id="content-page">
+    <center>
+        Cadastro Clientes
+        <form method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit"> Salvar </button>
+        </form>
+    
+    
+        {% if cliente %}
+            <a href="{% url 'apagarcliente' cliente.id_cliente %}"> 
+                <button>Apagar Cliente</button>
+            </a>
+        {% endif %}
+    </center>
+</div><!--/content-page-->
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}
+    ALMSolutions | Eventos
+{% endblock %}
+
+
+{% block main %}
+<div class="container-sm" id="content-page">
+
+
+<center>
+    <h1>
+        Fornecedores
+    </h1>
+        
+    
+    <a href="{% url 'cadastrofornecedor'%}">
+        <button> Adicionar </button>
+    </a>
+    
+    <table border="1">
+        <tr>
+            <td>        
+                Nome
+            </td>
+            <td>
+                Nome Fantasia
+            </td>
+            <td>
+                E-mail            
+            </td>
+            <td>
+                Telefone 
+            </td>
+        </tr>
+        {% for fornecedor in fornecedores %}
+        <tr>
+            <td>        
+                {{ fornecedor.nome}}
+            </td>
+            <td>
+                {{ fornecedor.sobrenome}}
+            </td>
+            <td>
+                {{ fornecedor.email}}
+            </td>
+            <td>
+                {{ fornecedor.celular}} 
+            </td>
+            <td>
+            <a href="{% url 'atualizafornecedor' fornecedor.id_fornecedor %}">
+                <button>Editar</button> 
+            </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    </center>
+
+
+</div><!--/content-page-->
+{% endblock %}

@@ -23,7 +23,16 @@
             <li> attendees: {{ form.email }} </li>
             {{form.uidd.as_hidden}}
          </ul>
-        <button class="btn btn-primary" type="submit" value="Salvar">Salvar</button>
+
+         <div class="row">
+            <div class="col-sm" id="create-event" align="right">
+                <button class="btn btn-primary" type="submit" value="Salvar">criar novo evento</button>
+            </div>
+            <div class="col-sm" id="create-return" align="left">
+                <a href="{% url 'events_list' %}" class="btn btn-primary text-uppercase">retornar para listagem</a>
+            </div>
+        </div>
+        
     </div>
 </form>
 

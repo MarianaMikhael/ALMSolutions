@@ -17,7 +17,7 @@
                     <tr>
                         <th scope="col-2">DIA</th>
                         <th scope="col-auto"><strong><a data-cal_event-id="{{event.id}}" href="{% url 'update' event.id %}"><span id="summary__{{event.id}}">{{ event.summary }}</span></a></strong></th>
-                        <button class="btn btn-danger" type="submit" value="Excluir"><a href="{% url 'delete' event.id %}"></a>Excluir</button>
+                        <a data-cal_event-id="{{event.id}}" href="{% url 'delete' event.id %}">Excluir</a>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,9 +25,9 @@
                         <th scope="row">MÊS</th>
                             <td>
                                 <div class="row">
-                                    <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i>{{ event.status }}</div> 
-                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Start: <span id="start__{{event.id}}">{{ event.start.dateTime }}</span> - End:<span id="end__{{event.id}}">{{ event.end.dateTime }}</span></div>
-                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}">{{ event.location }}</span></div>
+                                    <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
+                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Start: <span id="start__{{event.id}}"> {{ event.start.dateTime }}</span> - End:<span id="end__{{event.id}}"> {{ event.end.dateTime }}</span></div>
+                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}"> {{ event.location }}</span></div>
                                 </div>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">Organizador(a): {{ event.organizer.email }}</li>

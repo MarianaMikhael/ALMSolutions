@@ -22,7 +22,16 @@
             <li> description: {{ form.description }} </li>
             <li> attendees: {{ form.email }} </li>
          </ul>
-        <button class="btn btn-primary" type="submit" value="Salvar">Salvar</button>
+
+         <div class="row">
+            <div class="col-sm" id="update-event" align="right">
+                <button class="btn btn-primary" type="submit" value="Salvar">Salvar</button>
+            </div>
+            <div class="col-sm" id="update-return" align="left">
+                <a href="{% url 'events_list' %}" class="btn btn-primary text-uppercase">retornar</a>
+            </div>
+        </div>
+
     </div>
     <input type="hidden" name="uidd" id="eventId" value="{{uidd}}" />
 </form>

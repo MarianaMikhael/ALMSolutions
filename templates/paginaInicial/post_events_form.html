@@ -11,7 +11,7 @@
 
 <form method="POST" id="form_event" class="mx-auto">
     {% csrf_token %}
-    <div class = "container">
+    <div class="container">
         <ul>
             {{ form.errors }}
             {{ form.non_field_errors }}
@@ -27,24 +27,63 @@
             <li> valor: {{ form.valor }} </li>
             {{form.uidd.as_hidden}}
          </ul>
-        <button class="btn btn-primary" type="submit" value="Save">Submit</button>
-        <!--<button class="btn btn-primary" type="submit" value="Save">Submit</button>-->
+        <button class="btn btn-primary" type="submit" value="Salvar">Salvar</button>
     </div>
+    <input type="hidden" name="uidd" id="eventId" value="{{uidd}}" />
+    <button class="btn btn-danger" type="submit" value="Excluir"><a href="{% url 'delete' uidd %}"></a>Excluir</button>
 </form>
 
 <!-- Libraries for datapicker -->
-<script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.0.1/js/bootstrap-datetimepicker.min.js" type=" text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.0.1/js/bootstrap-datetimepicker.min.js" type=" text/javascript"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/2.0.1/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
 
-    <script>
-        $('#id_start').datetimepicker(
-        {format: 'YYYY-MM-DD HH:mm:ss'
-        });
-        $('#id_end').datetimepicker(
-        {format: 'YYYY-MM-DD HH:mm:ss'
-        });
-    </script>
+<script type="text/javascript">
 
+    function getCalendarEventData(calEventId) {
 
+        try {
+
+            return JSON.parse(localStorage.getItem(calEventId));
+
+        } catch(e) {
+
+            console.error(e);
+
+            return null;
+        }
+    }
+
+    function loadCalendarEventData(calEventData) {
+
+        $('#id_description').val(calEventData.description);
+        $('#id_summary').val(calEventData.summary);
+        $('#id_location').val(calEventData.location);
+        $('#id_start').val(calEventData.start);
+        $('#id_end').val(calEventData.end);
+        $('#id_email').val(calEventData.attendees.join(','));
+
+    }
+
+    $(function(e){
+
+        $('#id_start,#id_end').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+
+        var calEventId = $('#eventId').val();
+        var calEventData = getCalendarEventData(calEventId);
+
+        if (calEventData) {
+            loadCalendarEventData(calEventData);
+            try {
+            localStorage.removeItem(calEventData.uidd);
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+    });
+</script>
 
 {% endblock %}

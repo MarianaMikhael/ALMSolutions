@@ -9,14 +9,14 @@
 
 
 {% block main %}
-    <div class="container-sm" id="content-page">
 
+    <div class="container-sm" id="content-page">
         {% for event in events.items %}
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col-2">DIA</th>
-                        <th scope="col-auto"><strong>{{ event.summary }}</strong></th>
+                        <th scope="col-auto"><strong><a data-cal_event-id="{{event.id}}" href="{% url 'update' event.id %}"><span id="summary__{{event.id}}">{{ event.summary }}</span></a></strong></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -24,21 +24,22 @@
                         <th scope="row">MÊS</th>
                             <td>
                                 <div class="row">
-                                    <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
-                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span> Start: {{ event.start.dateTime }} - End: {{ event.end.dateTime }}</span></div>
-                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{ event.location }}</div>
+                                    <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i>{{ event.status }}</div> 
+                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Start: <span id="start__{{event.id}}">{{ event.start.dateTime }}</span> - End:<span id="end__{{event.id}}">{{ event.end.dateTime }}</span></div>
+                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}">{{ event.location }}</span></div>
                                 </div>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">Organizador(a): {{ event.organizer.email }}</li>
-                                    <BR>
+                                    <br />
                                     <li class="list-inline-item">
                                         Convidado(s):
                                         {% for convidado in event.attendees %}
-                                            {{ convidado.email }};
+                                            <span name="attendee__{{event.id}}">{{ convidado.email }}</span>;
                                         {% endfor %}
                                     </li>
-                                    <BR>
-                                        <li class="list-inline-item">Descrição: {{ event.description }}</li>
+                                    <br />
+                                    <li class="list-inline-item">
+                                        <span id="description__{{event.id}}">Descrição: {{ event.description }}</span>
                                     </li>
                                 </ul>
                             </td>
@@ -46,6 +47,7 @@
                     </tr>
                 </tbody>
             </table>
+            
         {% endfor %}
     
         <!--Botão de Cadastro-->
@@ -55,6 +57,54 @@
 
         <!--Seta Topo-->
         {% include 'includes/seta-topo.html' %}
+
+        <script type="text/javascript">
+
+            function getCalendarEventData(calEventId) {
+
+                var attendees = [];
+
+                $('[name="attendee__' + calEventId + '"]').each(function(index, elem) {
+                    attendees.push($(elem).text());
+                });
+
+                return {
+                    uidd: calEventId,
+                    summary: $('#summary__'+ calEventId).text(),
+                    description: $('#description__'+ calEventId).text(),
+                    location: $('#location__'+ calEventId).text(),
+                    start: $('#start__'+ calEventId).text(),
+                    end: $('#end__'+ calEventId).text(),
+                    attendees
+                };
+
+            }
+
+            $(function(e){
+
+                $('[data-cal_event-id]').on('click',function(e){
+                    
+                    e.preventDefault();
+
+                    var target = $(this);
+                    var calEventId = target.data('cal_event-id');
+
+                    try {
+                        localStorage.setItem(calEventId, JSON.stringify(getCalendarEventData(calEventId)));
+
+                        setTimeout(function(){
+                            window.location.href = target.attr('href');
+                        }, 500);
+                    } catch(e) {
+                        console.error(e);
+                    }
+
+
+                });
+
+            });
+            
+        </script>
 
     </div><!--/content-page-->
 {% endblock %}

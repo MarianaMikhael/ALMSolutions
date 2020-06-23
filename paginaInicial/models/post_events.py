@@ -40,11 +40,11 @@ class Post(models.Model):
     start = models.DateTimeField("De", default=datetime.now, null=True)  # start event date
     end = models.DateTimeField("Até", default=datetime.now, null=True)  # end event date default=datetime.now
     location = models.CharField("Localização", max_length=500, null=True)
-    event_type = models.CharField(max_length=40, choices=opcao_evento, default='',
+    event_type = models.CharField(max_length=40, choices=opcao_evento, default=None,
         verbose_name='Tipo de Evento')
-    service_option = models.CharField(max_length=40, choices=opcao_servico, default='',
+    service_option = models.CharField(max_length=40, choices=opcao_servico, default=None,
         verbose_name='Opções de Serviço')
-    status = models.CharField(max_length=40, choices=opcao_status, default='',
+    status = models.CharField(max_length=40, choices=opcao_status, default=None,
         verbose_name='Status de Confirmação')
     description = models.CharField("Descrição(ões) Adicional(ais)", max_length=500, null=True)
     email = models.EmailField(_('Convidado'), max_length=255,

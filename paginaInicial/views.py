@@ -5,7 +5,7 @@ import logging
 import httplib2
 
 from datetime import datetime
-from django.contrib.auth import authenticate, login#, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -40,7 +40,7 @@ def login_request(request):
     return render(request, 'paginaInicial/login.html', context)
 
 
-# -------------------------------------------------> Login Google OAuth 2.0
+# -------------------------------------------------> Login Google oAuth 2.0
 
 SCOPES = [
     'https://www.googleapis.com/auth/userinfo.email',
@@ -84,13 +84,14 @@ def events_list(request):
 
     service = build("calendar", "v3", credentials=credentials)
 
+    now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    print(now)
     events = service.events()
     event_list = events.list(
         calendarId='primary',
-        #timeMin=now,
-        #maxResults=15,
+        timeMin=now,
         singleEvents=True,
-        #orderBy='startTime',
+        orderBy='startTime',
         ).execute()
 
     return render(request, 'paginaInicial/home.html', {'events': event_list})
@@ -299,46 +300,6 @@ def delete(request, uidd, template_name='paginaInicial/delete_events_form.html')
 
 # -------------------------------------------------> Utils
 
-def get_event_id(request):
-    """ This function return google calendar event id as string - last value from table"""
-    # credentials = pickle.load(open("token.pkl", "rb"))
-    # service = build("calendar", "v3", credentials=credentials)
-    # result = service.calendarList().list().execute()
-    # calendar_id = result['items'][0]['id']
-    # result = service.events().list(calendarId=calendar_id, maxResults=2400).execute()
-    # table_size = len(result['items'])
-    # uidd = result['items'][table_size - 1]['id']
-    # return uidd
-    home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
-    if not os.path.exists(credential_dir):
-        os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,
-                                'calendar-python-quickstart.json')
-    
-    store = file.Storage(credential_path)
-    credentials = store.get()        
-    # if not credentials or credentials.invalid is True:
-    #     flow = get_flow(request)
-    #     flow.params['state'] = xsrfutil.generate_token(config('SECRET_KEY'),
-    #                                                 request.user)
-    #     request.session['flow'] = pickle.dumps(flow).decode('iso-8859-1')
-    #     authorize_url = flow.step1_get_authorize_url()
-    
-    #     return HttpResponseRedirect(authorize_url)
-    http = httplib2.Http()
-    http = credentials.authorize(http)
-    service = build('calendar', 'v3', http=http)
-
-    result = service.calendarList().list().execute()
-    calendar_id = result['items'][0]['id']
-    result = service.events().list(calendarId=calendar_id, maxResults=2400).execute()
-    table_size = len(result['items'])
-    uidd = result['items'][table_size - 1]['id']
-    
-    return uidd
-
-
 # Make sure that the request is from who we think it is
 def oauth2redirect(request):
     home_dir = os.path.expanduser('~')
@@ -368,6 +329,37 @@ def oauth2redirect(request):
         return HttpResponseBadRequest()
 
 
+def get_event_id(request):
+    """ This function return google calendar event id as string - last value from table"""
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                'calendar-python-quickstart.json')
+    
+    store = file.Storage(credential_path)
+    credentials = store.get()        
+    if not credentials or credentials.invalid is True:
+        flow = get_flow(request)
+        flow.params['state'] = xsrfutil.generate_token(config('SECRET_KEY'),
+                                                    request.user)
+        request.session['flow'] = pickle.dumps(flow).decode('iso-8859-1')
+        authorize_url = flow.step1_get_authorize_url()
+    
+        return HttpResponseRedirect(authorize_url)
+
+    service = build("calendar", "v3", credentials=credentials)
+
+    result = service.calendarList().list().execute()
+    calendar_id = result['items'][0]['id']
+    result = service.events().list(calendarId=calendar_id, maxResults=2400).execute()
+    table_size = len(result['items'])
+    uidd = result['items'][table_size - 1]['id']
+    
+    return uidd
+
+
 def convertToRFC3339DatetimeFormat(brazilianDateTime):
     year =   brazilianDateTime[6:10]
     month =  brazilianDateTime[3:5]
@@ -390,7 +382,10 @@ def convertToBrazilianDatetimeFormat(isoFormatDateTime):
     return f'{day}-{month}-{year} {hour}:{minute}:{second}'
 
 
-'''
+# -------------------------------------------------> Logout ALMSolutions
+
+# ALMSolutions Logout and Delete Delete Credentials oAuth 2.0
+
 @login_required
 def logout(request):
     user = request.user
@@ -402,4 +397,3 @@ def logout(request):
 
     auth_logout(request)
     return HttpResponseRedirect('/')
-'''

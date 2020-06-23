@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}
+    ALMSolutions | Eventos
+{% endblock %}
+
+
+{% block main %}
+<div class="container-sm" id="content-page">
+    <center>
+        <h1>
+            Fornecedores <br>
+            Cadastro
+        </h1>
+        
+        <form method="POST">
+            {% csrf_token %}
+            {{form}}
+            <button type="submit"> Salvar </button>
+        </form>
+    
+    
+        {% if fornecedor %}
+            <a href="{% url 'apagarfornecedor' fornecedor.id_fornecedor %}"> 
+                <button> Apagar Fornecedor </button>
+            </a>
+        {% endif %}
+    </center>
+</div><!--/content-page-->
+{% endblock %}

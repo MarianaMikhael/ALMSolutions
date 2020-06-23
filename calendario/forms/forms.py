@@ -19,7 +19,7 @@ class fornecedorForm(ModelForm):
             'id_fornecedor',
         ]
 
-
+'''
 class eventoForm(forms.ModelForm):
     class Meta:
         model = m.eventos.t_evento
@@ -31,3 +31,4 @@ class eventoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(eventoForm, self).__init__(*args, **kwargs)
         self.fields['opcao_servico'].widget = forms.CheckboxSelectMultiple()
+'''

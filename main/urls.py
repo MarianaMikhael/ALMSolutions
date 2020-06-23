@@ -24,7 +24,7 @@ from paginaInicial import urls as urls_paginaInicial
 
 urlpatterns = [
     path('', include(urls_paginaInicial)),
-    #path('calendario/', include(urls_calendario)),
+    path('calendario/',include('calendario.urls')),
     path('admin/', admin.site.urls, name='url_admin'),
 ]
 

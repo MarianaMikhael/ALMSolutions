@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+
+{% block title %}
+    ALMSolutions | Eventos
+{% endblock %}
+
+
+{% block main %}
+<div class="container-sm" id="content-page">
+    <center>
+        Fornecedores
+        <form method="POST">
+        {% csrf_token %}
+        Deseja apagar o Fornecedor?
+        <p>
+            <button type="submit"> Apagar </button>
+        </p>
+        </form>    
+    </center>
+</div><!--/content-page-->
+{% endblock %}

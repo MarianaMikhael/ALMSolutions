@@ -82,9 +82,6 @@ def events_list(request):
     
         return HttpResponseRedirect(authorize_url)
 
-    # http = httplib2.Http()
-    # http = credentials.authorize(http)
-    # service = build('calendar', 'v3', http=http)
     service = build("calendar", "v3", credentials=credentials)
 
     events = service.events()
@@ -121,9 +118,6 @@ def sent_to_API(request, summary, location, description, start_time1, end_time1,
 
         return HttpResponseRedirect(authorize_url)
 
-    # http = httplib2.Http()
-    # http = credentials.authorize(http)
-    # service = build('calendar', 'v3', http=http)
     service = build("calendar", "v3", credentials=credentials)
 
     """Get Calendar"""
@@ -161,7 +155,7 @@ def sent_to_API(request, summary, location, description, start_time1, end_time1,
     service.events().insert(calendarId=calendar_id, sendNotifications=True, body=event).execute()
 
 
-def create(request, template_name='paginaInicial/post_events_form.html'):
+def create(request, template_name='paginaInicial/create_events_form.html'):
     """ Function which add new record to database and to google calendar"""
     form = PostForm(request.POST or None)
     if form.is_valid():
@@ -240,7 +234,7 @@ def edit_to_API(request, summary, location, description, start_time1, end_time1,
     service.events().update(calendarId=calendar_id, sendNotifications=True, eventId=uidd, body=event).execute()
 
 
-def update(request, uidd, template_name='paginaInicial/post_events_form.html'):
+def update(request, uidd, template_name='paginaInicial/update_events_form.html'):
     # calendar = get_object_or_404(Post, pk=pk)
     # form = PostForm(request.POST or None, instance=calendar)
     form = PostForm(request.POST or None)
@@ -292,14 +286,14 @@ def delete_from_API(request, uidd):
     service.events().delete(calendarId=calendar_id, sendNotifications=True, eventId=uidd).execute()
 
 
-def delete(request, uidd, template_name='paginaInicial/post_events_form.html'):
+def delete(request, uidd, template_name='paginaInicial/confirm_delete.html'):
     # my_event = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         delete_from_API(request, uidd)
         # my_event.delete()
         return redirect('events_list')
     
-    return render(request, template_name, {'uidd': uidd})
+    return render(request, template_name, {'form': form, 'uidd': uidd})
 
 
 # -------------------------------------------------> Utils

@@ -10,10 +10,6 @@ class PostForm(forms.ModelForm):
             'start',
             'end',
             'location',
-            'event_type',
-            'service_option',
-            'status',
             'description',
             'email',
-            'valor',
             ]

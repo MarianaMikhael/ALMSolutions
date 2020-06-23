@@ -17,6 +17,7 @@
                     <tr>
                         <th scope="col-2">DIA</th>
                         <th scope="col-auto"><strong><a data-cal_event-id="{{event.id}}" href="{% url 'update' event.id %}"><span id="summary__{{event.id}}">{{ event.summary }}</span></a></strong></th>
+                        <button class="btn btn-danger" type="submit" value="Excluir"><a href="{% url 'delete' event.id %}"></a>Excluir</button>
                     </tr>
                 </thead>
                 <tbody>

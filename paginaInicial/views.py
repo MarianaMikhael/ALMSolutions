@@ -82,9 +82,11 @@ def events_list(request):
     
         return HttpResponseRedirect(authorize_url)
 
-    http = httplib2.Http()
-    http = credentials.authorize(http)
-    service = build('calendar', 'v3', http=http)
+    # http = httplib2.Http()
+    # http = credentials.authorize(http)
+    # service = build('calendar', 'v3', http=http)
+    service = build("calendar", "v3", credentials=credentials)
+
     events = service.events()
     event_list = events.list(
         calendarId='primary',
@@ -100,6 +102,7 @@ def events_list(request):
 # -------------------------------------------------> Create Event
 
 def sent_to_API(request, summary, location, description, start_time1, end_time1, email):
+    """Get Credentials"""
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -117,13 +120,17 @@ def sent_to_API(request, summary, location, description, start_time1, end_time1,
         authorize_url = flow.step1_get_authorize_url()
 
         return HttpResponseRedirect(authorize_url)
-    http = httplib2.Http()
-    http = credentials.authorize(http)
-    service = build('calendar', 'v3', http=http)
 
+    # http = httplib2.Http()
+    # http = credentials.authorize(http)
+    # service = build('calendar', 'v3', http=http)
+    service = build("calendar", "v3", credentials=credentials)
+
+    """Get Calendar"""
     result = service.calendarList().list().execute()
     calendar_id = result['items'][0]['id']
 
+    """Create a New Event"""
     eventStartDate = convertToRFC3339DatetimeFormat(start_time1)
     eventEndDate = convertToRFC3339DatetimeFormat(end_time1)
     timezone = 'Brazil/East'    
@@ -180,6 +187,7 @@ def create(request, template_name='paginaInicial/post_events_form.html'):
 # -------------------------------------------------> Edit Event
 
 def edit_to_API(request, summary, location, description, start_time1, end_time1, email, uidd):
+    """This function return google calendar event id as string - last value from table"""
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -201,11 +209,11 @@ def edit_to_API(request, summary, location, description, start_time1, end_time1,
     service = build("calendar", "v3", credentials=credentials)    
     result = service.calendarList().list().execute()
     calendar_id = result['items'][0]['id']
-    
     timezone = 'Brazil/East'
+
     eventStartDate = convertToRFC3339DatetimeFormat(start_time1)
-    eventEndDate = convertToRFC3339DatetimeFormat(end_time1)  
-    
+    eventEndDate = convertToRFC3339DatetimeFormat(end_time1)
+
     event = {
         'summary': summary,
         'location': location,
@@ -229,18 +237,69 @@ def edit_to_API(request, summary, location, description, start_time1, end_time1,
             {'email': email},
         ],
     }
-    service.events().update(calendarId=calendar_id, eventId=uidd, body=event).execute()
+    service.events().update(calendarId=calendar_id, sendNotifications=True, eventId=uidd, body=event).execute()
 
 
 def update(request, uidd, template_name='paginaInicial/post_events_form.html'):
-    calendar = get_object_or_404(id=uidd)
-    form = PostForm(request.POST or None, instance=calendar)
+    # calendar = get_object_or_404(Post, pk=pk)
+    # form = PostForm(request.POST or None, instance=calendar)
+    form = PostForm(request.POST or None)
     if form.is_valid():
-        edit_to_API(request, calendar.summary, calendar.location, calendar.description, calendar.start, calendar.end, calendar.email, calendar.uidd)
+        summary = form.data['summary']
+        location = form.data['location']
+        description = form.data['description']
+        start_time = form.data['start']
+        end_time = form.data['end']
+        email = form.data['email']
+        uidd = form.data['uidd']
+
+        start_time1 = convertToBrazilianDatetimeFormat(start_time)
+        end_time1 = convertToBrazilianDatetimeFormat(end_time)
+ 
+        edit_to_API(request, summary, location, description, start_time1, end_time1, email, uidd)
         form.save()
+
         return redirect('events_list')
     
-    return render(request, template_name, {'form': form, 'calendar': calendar})
+    return render(request, template_name, {'form': form, 'uidd' : uidd})
+
+
+# -------------------------------------------------> Delete Event
+
+def delete_from_API(request, uidd):
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                'calendar-python-quickstart.json')
+    
+    store = file.Storage(credential_path)
+    credentials = store.get()        
+    if not credentials or credentials.invalid is True:
+        flow = get_flow(request)
+        flow.params['state'] = xsrfutil.generate_token(config('SECRET_KEY'),
+                                                    request.user)
+        request.session['flow'] = pickle.dumps(flow).decode('iso-8859-1')
+        authorize_url = flow.step1_get_authorize_url()
+    
+        return HttpResponseRedirect(authorize_url)
+
+    service = build("calendar", "v3", credentials=credentials)
+   
+    result = service.calendarList().list().execute()
+    calendar_id = result['items'][0]['id']
+    service.events().delete(calendarId=calendar_id, sendNotifications=True, eventId=uidd).execute()
+
+
+def delete(request, uidd, template_name='paginaInicial/post_events_form.html'):
+    # my_event = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        delete_from_API(request, uidd)
+        # my_event.delete()
+        return redirect('events_list')
+    
+    return render(request, template_name, {'uidd': uidd})
 
 
 # -------------------------------------------------> Utils
@@ -325,6 +384,15 @@ def convertToRFC3339DatetimeFormat(brazilianDateTime):
     return f'{year}-{month}-{day}T{hour}:{minute}:{second}'
 
 
+def convertToBrazilianDatetimeFormat(isoFormatDateTime):
+    year =   isoFormatDateTime[0:4]
+    month =  isoFormatDateTime[5:7]
+    day =    isoFormatDateTime[8:10]
+    hour =   isoFormatDateTime[11:13]
+    minute = isoFormatDateTime[14:16]
+    second = isoFormatDateTime[17:19]
+
+    return f'{day}-{month}-{year} {hour}:{minute}:{second}'
 
 '''
 @login_required

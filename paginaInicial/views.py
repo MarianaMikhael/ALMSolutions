@@ -286,8 +286,9 @@ def delete_from_API(request, uidd):
     service.events().delete(calendarId=calendar_id, sendNotifications=True, eventId=uidd).execute()
 
 
-def delete(request, uidd, template_name='paginaInicial/confirm_delete.html'):
+def delete(request, uidd, template_name='paginaInicial/delete_events_form.html'):
     # my_event = get_object_or_404(Post, pk=pk)
+    form = PostForm(request.POST or None)
     if request.method == 'POST':
         delete_from_API(request, uidd)
         # my_event.delete()
@@ -387,6 +388,7 @@ def convertToBrazilianDatetimeFormat(isoFormatDateTime):
     second = isoFormatDateTime[17:19]
 
     return f'{day}-{month}-{year} {hour}:{minute}:{second}'
+
 
 '''
 @login_required

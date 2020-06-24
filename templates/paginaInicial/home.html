@@ -9,103 +9,137 @@
 
 
 {% block main %}
-
-    <div class="container-sm" id="content-page">
-        {% for event in events.items %}
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col-2">DIA</th>
-                        <th scope="col-auto"><strong><a data-cal_event-id="{{event.id}}" href="{% url 'update' event.id %}"><span id="summary__{{event.id}}">{{ event.summary }}</span></a></strong></th>
-                        <a data-cal_event-id="{{event.id}}" href="{% url 'delete' event.id %}">Excluir</a>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">MÊS</th>
-                            <td>
-                                <div class="row">
-                                    <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
-                                    <div class="col-auto"><i class="fa fa-clock-o" aria-hidden="true"></i><span>Start: <span id="start__{{event.id}}"> {{ event.start.dateTime }}</span> - End:<span id="end__{{event.id}}"> {{ event.end.dateTime }}</span></div>
-                                    <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}"> {{ event.location }}</span></div>
-                                </div>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">Organizador(a): {{ event.organizer.email }}</li>
-                                    <br />
-                                    <li class="list-inline-item">
-                                        Convidado(s):
-                                        {% for convidado in event.attendees %}
-                                            <span name="attendee__{{event.id}}">{{ convidado.email }}</span>;
-                                        {% endfor %}
-                                    </li>
-                                    <br />
-                                    <li class="list-inline-item">
-                                        <span id="description__{{event.id}}">Descrição: {{ event.description }}</span>
-                                    </li>
-                                </ul>
-                            </td>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
-            
-        {% endfor %}
+<div class="container-sm" id="content-page">
     
-        <!--Botão de Cadastro-->
-        <a href={% url 'create' %} class="btn-float" id="novo-evento">
-            <i class="fa fa-plus"></i>
-        </a>
+    {% for event in events.items %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col-2" id="day{{forloop.counter}}"></th>
+                <th scope="col-auto">
+                    <div class="row">
+                        <div class="col-auto">
+                            <a data-cal_event-id="{{event.id}}" href="{% url 'update' event.id %}"><span id="summary__{{event.id}}">{{ event.summary }}</span></a>
+                        </div>
+                        <div class="col-auto">
+                            <a data-cal_event-id="{{event.id}}" href="{% url 'delete' event.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row" id="month{{forloop.counter}}"></th>
+                <td>
+                    <div class="row">
+                        <small>
+                            <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
+                        </small>
+                        <small>
+                            <div class="col-auto">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                <span id="start{{forloop.counter}}">
+                                    <span id="start__{{event.id}}"> {{ event.start.dateTime }}</span>
+                                </span>
+                                <span>-</span>
+                                <span id="end{{forloop.counter}}">
+                                    <span id="end__{{event.id}}"> {{ event.end.dateTime }}</span>
+                                </span>
+                            </div>
+                        </small>
+                        <small>
+                            <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}"> {{ event.location }}</span></div>
+                        </small>
+                    </div>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            {% for convidado in event.attendees %}
+                                <span name="attendee__{{event.id}}">{{ convidado.email }}</span>;
+                            {% endfor %}
+                        </li>
+                        <br />
+                        <li class="list-inline-item">
+                            <span id="description__{{event.id}}">Descrição: {{ event.description }}</span>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-        <!--Seta Topo-->
-        {% include 'includes/seta-topo.html' %}
+    <script>
+        var months = [
+            'JAN', 'FEV', 'MAR', 'ABR','MAI', 'JUN',
+            'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'
+            ]
+        var date = "{{event.start.dateTime}}"
+        var month = date[5]+date[6]; month = parseInt(month)
+        var day = date[8]+date[9];
+        var start = date.slice(11, 16)
+        var end = "{{event.end.dateTime}}".slice(11, 16)
+        document.getElementById('day{{forloop.counter}}').innerHTML = day
+        document.getElementById('month{{forloop.counter}}').innerHTML = months[month-1]
+        document.getElementById('start{{forloop.counter}}').innerHTML = start
+        document.getElementById('end{{forloop.counter}}').innerHTML = end
+    </script>
+    {% endfor %}
+    
+    <!--Botão de Cadastro-->
+    <a href={% url 'create' %} class="btn-float" id="novo-evento">
+        <i class="fa fa-plus"></i>
+    </a>
 
-        <script type="text/javascript">
+    <!--Seta Topo-->
+    {% include 'includes/seta-topo.html' %}
 
-            function getCalendarEventData(calEventId) {
+    <script type="text/javascript">
 
-                var attendees = [];
+        function getCalendarEventData(calEventId) {
 
-                $('[name="attendee__' + calEventId + '"]').each(function(index, elem) {
-                    attendees.push($(elem).text());
-                });
+            var attendees = [];
 
-                return {
-                    uidd: calEventId,
-                    summary: $('#summary__'+ calEventId).text(),
-                    description: $('#description__'+ calEventId).text(),
-                    location: $('#location__'+ calEventId).text(),
-                    start: $('#start__'+ calEventId).text(),
-                    end: $('#end__'+ calEventId).text(),
-                    attendees
-                };
+            $('[name="attendee__' + calEventId + '"]').each(function(index, elem) {
+                attendees.push($(elem).text());
+            });
 
-            }
+            return {
+                uidd: calEventId,
+                summary: $('#summary__'+ calEventId).text(),
+                description: $('#description__'+ calEventId).text(),
+                location: $('#location__'+ calEventId).text(),
+                start: $('#start__'+ calEventId).text(),
+                end: $('#end__'+ calEventId).text(),
+                attendees
+            };
 
-            $(function(e){
+        }
 
-                $('[data-cal_event-id]').on('click',function(e){
-                    
-                    e.preventDefault();
+        $(function(e){
 
-                    var target = $(this);
-                    var calEventId = target.data('cal_event-id');
+            $('[data-cal_event-id]').on('click',function(e){
+                
+                e.preventDefault();
 
-                    try {
-                        localStorage.setItem(calEventId, JSON.stringify(getCalendarEventData(calEventId)));
+                var target = $(this);
+                var calEventId = target.data('cal_event-id');
 
-                        setTimeout(function(){
-                            window.location.href = target.attr('href');
-                        }, 500);
-                    } catch(e) {
-                        console.error(e);
-                    }
+                try {
+                    localStorage.setItem(calEventId, JSON.stringify(getCalendarEventData(calEventId)));
 
+                    setTimeout(function(){
+                        window.location.href = target.attr('href');
+                    }, 500);
+                } catch(e) {
+                    console.error(e);
+                }
 
-                });
 
             });
-            
-        </script>
 
-    </div><!--/content-page-->
+        });
+        
+    </script>
+
+</div><!--/content-page-->
 {% endblock %}

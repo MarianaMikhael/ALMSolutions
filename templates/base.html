@@ -46,7 +46,7 @@
 <body>
     <!--Navbar-->
 
-    {% if user.is_authenticated %}
+
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark" id="navbar-default">
             <div class="container-fluid">
                 <p class="navbar-brand">ValeVerde Eventos</p>
@@ -56,13 +56,13 @@
                 <div class="collapse navbar-collapse" id="navbarSite">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <p class="navbar-text">Olá, <b>{{ user.first_name }} !</b>
+                            <p class="navbar-text"><a href="{% url 'logout_request' %}">logout</a></p>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav><!--/Navbar-->
-    {% endif %}
+
 
     <!--Cabeçalho-->
 

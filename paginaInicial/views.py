@@ -6,6 +6,7 @@ import httplib2
 
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LogoutView as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -83,9 +84,8 @@ def events_list(request):
         return HttpResponseRedirect(authorize_url)
 
     service = build("calendar", "v3", credentials=credentials)
-
+   
     now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print(now)
     events = service.events()
     event_list = events.list(
         calendarId='primary',
@@ -387,13 +387,23 @@ def convertToBrazilianDatetimeFormat(isoFormatDateTime):
 # ALMSolutions Logout and Delete Delete Credentials oAuth 2.0
 
 @login_required
-def logout(request):
-    user = request.user
-    credentials = CredentialsModel.objects.get(id=user.id)
+def logout_request(request):
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    credential_path = os.path.join(credential_dir,
+                                'calendar-python-quickstart.json')
+    
+    store = file.Storage(credential_path)
+    credentials = store.get()  
     credentials.revoke(httplib2.Http())
-    credentials.delete()
-    storage = DjangoORMStorage(CredentialsModel, 'id', user, 'credential')
-    storage.delete()
 
-    auth_logout(request)
-    return HttpResponseRedirect('/')
+    if os.path.exists(credential_dir):
+        try:
+            os.remove(credential_dir)
+            print("% s removed successfully" % credential_dir)
+        except OSError as error: 
+            print("File Path Can Not Be Removed", error) 
+
+    logout(request)
+
+    return redirect('/')

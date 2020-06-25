@@ -1,38 +1,60 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% load static %}
+{% load widget_tweaks %}
 
 
 {% block title %}
-    ALMSolutions | Eventos
+    ALMSolutions | Criar Evento
 {% endblock %}
 
 {% block main %}
 
-<form method="POST" id="form_event" class="mx-auto">
+<form method="POST" id="form_create_event" class="mx-auto">
     {% csrf_token %}
     <div class="container">
-        <ul>
-            {{ form.errors }}
-            {{ form.non_field_errors }}
-            <li> summary: {{ form.summary }} </li>
-            <li> start: {{ form.start }} </li>
-            <li> end: {{ form.end }} </li>
-            <li> location: {{ form.location }} </li>
-            <li> description: {{ form.description }} </li>
-            <li> attendees: {{ form.email }} </li>
-            {{form.uidd.as_hidden}}
-         </ul>
+        {{ form.errors }}
+        {{ form.non_field_errors }}
 
-         <div class="row">
+        <label for="id_summary">Título: </label>
+            {{ form.summary | attr:'class:form-control' }} 
+                
+        <div class="row">
+            <div class="col-md-6">
+                <label for="id_start">Data e Hora Inicial: </label>
+                {% render_field form.start|append_attr:"class:form-control" type="data-and-time-local" %}
+            </div>
+
+            <div class="col-md-6">
+                <label for="id_end"> Data e Hora Final: </label>
+                {% render_field form.end|append_attr:"class:form-control" type="data-and-time-local" %}
+            </div>
+        </div> 
+
+        <label for="id_location">Local: </label>
+            {{ form.location | attr:'class:form-control' }} 
+
+        <label for="id_description"> Descrição: </label>
+            {{ form.description | attr:'class:form-control' }} 
+
+        <label for="id_email">Convidado(s): </label>
+            {{ form.email | attr:'class:form-control' }} 
+        
+        {{form.uidd.as_hidden}}
+        <br />
+
+        <div class="row">
             <div class="col-sm" id="create-event" align="right">
-                <button class="btn btn-primary" type="submit" value="Salvar">criar novo evento</button>
+                <button class="btn btn-primary text-uppercase" type="submit" value="Salvar">criar novo evento</button>
             </div>
             <div class="col-sm" id="create-return" align="left">
                 <a href="{% url 'events_list' %}" class="btn btn-primary text-uppercase">retornar para listagem</a>
             </div>
         </div>
-        
+        <br />
+        <br />
+        <br />
+                
     </div>
 </form>
 

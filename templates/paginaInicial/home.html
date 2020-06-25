@@ -83,20 +83,13 @@
         document.getElementById('start{{forloop.counter}}').innerHTML = start
         document.getElementById('end{{forloop.counter}}').innerHTML = end
     </script>
-    {% endfor %}
-    
-    <!--Botão de Cadastro-->
-    <a href={% url 'create' %} class="btn-float" id="novo-evento">
-        <i class="fa fa-plus"></i>
-    </a>
-
-    <!--Seta Topo-->
-    {% include 'includes/seta-topo.html' %}
 
     <script type="text/javascript">
 
         function getCalendarEventData(calEventId) {
 
+            var date_start = "{{event.start.dateTime}}"
+            var date_end = "{{event.end.dateTime}}"
             var attendees = [];
 
             $('[name="attendee__' + calEventId + '"]').each(function(index, elem) {
@@ -108,8 +101,10 @@
                 summary: $('#summary__'+ calEventId).text(),
                 description: $('#description__'+ calEventId).text(),
                 location: $('#location__'+ calEventId).text(),
-                start: $('#start__'+ calEventId).text(),
-                end: $('#end__'+ calEventId).text(),
+                // start: $('#start__'+ calEventId).text(),
+                // end: $('#end__'+ calEventId).text(),
+                start: date_start.slice(8,10) + "/" + date_start.slice(5,7) + "/" + date_start.slice(0,4) + " " + date_start.slice(11,19),
+                end: date_end.slice(8,10) + "/" + date_end.slice(5,7) + "/" + date_end.slice(0,4) + " " + date_end.slice(11,19),
                 attendees
             };
 
@@ -140,6 +135,15 @@
         });
         
     </script>
+    {% endfor %}
+    
+    <!--Botão de Cadastro-->
+    <a href="{% url 'create' %}" class="btn-float" id="novo-evento">
+        <i class="fa fa-plus"></i>
+    </a>
+
+    <!--Seta Topo-->
+    {% include 'includes/seta-topo.html' %}
 
 </div><!--/content-page-->
 {% endblock %}

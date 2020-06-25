@@ -14,7 +14,7 @@ class Post(models.Model):
     start = models.DateTimeField("De", default=datetime.now, null=True)  # start event date
     end = models.DateTimeField("Até", default=datetime.now, null=True)  # end event date default=datetime.now
     location = models.CharField("Localização", max_length=500, blank=True, null=True)
-    description = models.CharField("Descrição(ões) Adicional(ais)", max_length=500, blank=True, null=True)
+    description = models.TextField("Descrição(ões) Adicional(ais)", max_length=500, blank=True, null=True)
     email = models.EmailField(_('Convidado'), max_length=255,
         validators=[
             validators.RegexValidator(re.compile('^[\w.@+-]+$'), _('Insira um e-mail válido.'),

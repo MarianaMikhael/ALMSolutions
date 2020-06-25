@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'bootstrap4',
+    'widget_tweaks',
 
     # Local APPs
     'paginaInicial',

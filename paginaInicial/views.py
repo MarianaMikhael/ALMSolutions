@@ -85,11 +85,11 @@ def events_list(request):
 
     service = build("calendar", "v3", credentials=credentials)
    
-    now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    # now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     events = service.events()
     event_list = events.list(
         calendarId='primary',
-        timeMin=now,
+        # timeMin=now,
         singleEvents=True,
         orderBy='startTime',
         ).execute()
@@ -372,9 +372,9 @@ def convertToRFC3339DatetimeFormat(brazilianDateTime):
 
 
 def convertToBrazilianDatetimeFormat(isoFormatDateTime):
-    year =   isoFormatDateTime[0:4]
-    month =  isoFormatDateTime[5:7]
-    day =    isoFormatDateTime[8:10]
+    year =   isoFormatDateTime[6:10]
+    month =  isoFormatDateTime[3:5]
+    day =    isoFormatDateTime[0:2]
     hour =   isoFormatDateTime[11:13]
     minute = isoFormatDateTime[14:16]
     second = isoFormatDateTime[17:19]

@@ -42,6 +42,12 @@ def atualizafornecedor(request, id):
 
 def clientes(request):
     clientes = t_cliente.objects.all()
+    form = clienteForm(request.POST or None)
+    
+    if 'criar' in request.POST:
+        if form.is_valid():
+            form.save()
+            return redirect('clientes')
 
     if 'apagar' in request.GET:
         id = request.GET.get('id_cliente')
@@ -50,7 +56,7 @@ def clientes(request):
 
         return redirect('clientes')
 
-    return render(request, 'calendario/clientes/clientes.html', {'clientes':clientes})
+    return render(request, 'calendario/clientes/clientes.html', {'clientes':clientes, 'form': form})
 
     
 def cadastrocliente(request):

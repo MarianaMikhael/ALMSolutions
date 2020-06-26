@@ -9,6 +9,9 @@
 
 
 {% block main %}
+<!-- Máscara para telefone -->
+<script src="{% static 'js/telefone.js' %}"></script>
+
 <div class="container-sm" id="content-page">
     
     <table class="table table-hover" id="client_table">
@@ -39,10 +42,12 @@
     </table>
                 
     <!--Botão de Cadastro-->
-    <a href="{% url 'cadastrocliente' %}" class="btn-float" id="novo-cliente">
+    <a href="#" class="btn-float" id="novo-cliente" data-target="#cadastrar_cliente" data-toggle="modal">
         <i class="fa fa-plus"></i>
     </a>
-
+    <!--Modal Cadastrar Cliente-->
+     {% include 'includes/modal_cliente.html' %}
+    
     <!--Seta Topo-->
     {% include 'includes/seta-topo.html' %}
 

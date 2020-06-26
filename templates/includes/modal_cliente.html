@@ -1,0 +1,50 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="cadastrar_cliente" tabindex="-1" role="dialog" aria-labelledby="cadastrarClienteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cadastrarClienteLabel">Cadastrar Cliente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="form_create_event" class="mx-auto">
+          {% csrf_token %}
+          <div class="container">
+              {{ form.errors }}
+              {{ form.non_field_errors }}
+  
+              <div class="row">
+                  <div class="col-md-4">
+                      <label for="nome">Nome: </label>
+                          {{ form.nome | attr:'class:form-control' }}
+                  </div>
+                  <div class="col-md-8">
+                      <label for="sobrenome">Sobrenome: </label>
+                          {{ form.sobrenome | attr:'class:form-control' }}
+                  </div>
+              </div>
+  
+              <div class="row">
+                  <div class="col-md-8">
+                      <label for="email">E-mail: </label>
+                          {{ form.email | attr:'class:form-control' }}
+                  </div>
+                  <div class="col-md-4">
+                      <label for="celular">Celular: </label>
+                          {{ form.celular | attr:'class:form-control' | attr:'oninput:mask(this, tel)' }}
+                  </div>
+              </div>
+              <br>
+              <br>
+          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+              <button type="submit" class="btn btn-success" name="criar">CADASTRAR</a>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

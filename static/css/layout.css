@@ -5,10 +5,10 @@ html {
 }
 
 body {
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 b {
@@ -76,26 +76,16 @@ b {
 
 
 /*------------------------------------------Navbar------------------------------------------*/
-nav#navbar-default {
-  background-color: rgba(27, 38, 49, 0.7);
-}
-nav#navbar-default p {
-  color: white;
-  margin: 0;
-  position: center;
-}
+
 nav#navbar-default a {
-  color: #3366FF;
-  font-size: 11px;
+  color: #0033FF;
+  font-size: 18px;
   margin: 0 0 0 5px;
   text-transform: uppercase;
 }
 .navbar-brand {
   font-size: 22px;
-}
-.navbar-text {
-  height: 43px;
-  font-size: 14px;
+  height: auto;
 }
 .navbar-toggler {
   width: auto;
@@ -179,6 +169,35 @@ input:focus{
 
 
 /*----------------------------------------Events List---------------------------------------*/
+div.uppercase {
+  text-transform: uppercase;
+}
+
+th.day {
+  background-color: rgba(102, 153, 0, 0.6);
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+div.month{
+  text-transform: uppercase;
+  font-size: 20px;
+  text-align: left;
+}
+div.month a {
+  text-decoration: none;
+  color: #000000;
+}
+
+div.delete {
+  text-align: right;
+}
+i.fa-trash {
+  color: rgba(204, 0, 0, 0.7);
+  font-size: 24px;
+}
+
 .row-striped:nth-of-type(odd){
   background-color: #efefef;
   border-left: 4px #000000 solid;

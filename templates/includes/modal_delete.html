@@ -1,0 +1,32 @@
+<div class="modal fade" id="delete_event" tabindex="-1" role="dialog" aria-labelledby="deleteEventLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteEventLabel">Cancelar Evento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="GET" id="form_delete_event" class="mx-auto">
+            {% csrf_token %}
+            <input type="hidden" name="uidd" id="eventId" value="" />
+            <p>Tem certeza que deseja cancelar o evento <b id="event"></b>? </p>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">FECHAR</button>
+              <button type="submit" class="btn btn-danger" name="delete">SIM</a>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#delete_event').on('show.bs.modal', function (event) {
+  var summary = $(event.relatedTarget).data('summary');
+  var uidd = $(event.relatedTarget).data('uidd');
+  $("#event").text(summary);
+  $("#eventId").val(uidd);
+  });
+</script>

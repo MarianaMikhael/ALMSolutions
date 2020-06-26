@@ -94,6 +94,11 @@ def events_list(request):
         orderBy='startTime',
         ).execute()
 
+    if 'delete' in request.GET:
+        delete_from_API(request, request.GET.get('uidd'))
+
+        return redirect('events_list')
+
     return render(request, 'paginaInicial/home.html', {'events': event_list})
 
 

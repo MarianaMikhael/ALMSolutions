@@ -44,28 +44,31 @@
 </head>
 
 <body>
-    <!--Navbar-->
-
-
-        <nav class="navbar fixed-top navbar-expand-lg navbar-dark" id="navbar-default">
-            <div class="container-fluid">
-                <p class="navbar-brand">ValeVerde Eventos</p>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSite">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <p class="navbar-text"><a href="{% url 'logout_request' %}">logout</a></p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav><!--/Navbar-->
-
 
     <!--Cabeçalho-->
+ 
+    <!--NavBar-->
 
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark" id="navbar-default">
+        <div class="container-fluid">
+            <a href="#" class="navbar-brand">
+                <!-- Logo Image -->
+                <img src="{% static 'images/logoValeVerde.png' %}" width="100" height="95" alt="logo" class="d-inline-block align-middle mr-2">
+            </a>
+        </div>
+  
+        <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+  
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a href="{% url 'events_list' %}" class="nav-link"><strong>eventos</strong><span class="sr-only">(current)</span></a></li>
+                <li class="nav-item"><a href="{% url 'clientes' %}" class="nav-link">clientes</a></li>
+                <li class="nav-item"><a href="{% url 'fornecedores' %}" class="nav-link">fornecedores</a></li>
+            </ul>
+        </div>
+    </nav><!--/NavBar-->
+  
+  
     <!--Conteúdo da Página-->
     <div class="container-fluid" id="content-page">
 

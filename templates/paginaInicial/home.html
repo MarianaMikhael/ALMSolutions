@@ -15,14 +15,15 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col-2" id="day{{forloop.counter}}"></th>
+                <th scope="col-2" id="day{{forloop.counter}}" class="day" width="5%"></th>
                 <th scope="col-auto">
                     <div class="row">
-                        <div class="col-auto">
+                        <div class="col-11 month">
                             <a data-cal_event-id="{{event.id}}" href="{% url 'update' event.id %}"><span id="summary__{{event.id}}">{{ event.summary }}</span></a>
                         </div>
-                        <div class="col-auto">
-                            <a data-cal_event-id="{{event.id}}" href="{% url 'delete' event.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <div class="col-1 delete">
+                            <a href="#" data-toggle="modal" data-target="#delete_event" data-url="{% url 'delete' event.id %}" data-summary="{{ event.summary }}" data-uidd="{{event.id}}">
+                                <i class="fa fa-trash" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </th>
@@ -34,7 +35,7 @@
                 <td>
                     <div class="row">
                         <small>
-                            <div class="col-auto"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
+                            <div class="col-auto uppercase"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ event.status }}</div> 
                         </small>
                         <small>
                             <div class="col-auto">
@@ -49,7 +50,7 @@
                             </div>
                         </small>
                         <small>
-                            <div class="col-auto"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}"> {{ event.location }}</span></div>
+                            <div class="col-auto uppercase"><i class="fa fa-location-arrow" aria-hidden="true"></i><span id="location__{{event.id}}"> {{ event.location }}</span></div>
                         </small>
                     </div>
                     <ul class="list-inline">
@@ -60,7 +61,7 @@
                         </li>
                         <br />
                         <li class="list-inline-item">
-                            <span id="description__{{event.id}}">Descrição: {{ event.description }}</span>
+                            <span id="description__{{event.id}}"> {{ event.description }}</span>
                         </li>
                     </ul>
                 </td>
@@ -144,6 +145,8 @@
 
     <!--Seta Topo-->
     {% include 'includes/seta-topo.html' %}
+    {% include 'includes/modal_delete.html' %}
+
 
 </div><!--/content-page-->
 {% endblock %}

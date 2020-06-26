@@ -44,6 +44,12 @@ def apagarfornecedor(request, id):
 
 def clientes(request):
     clientes = t_cliente.objects.all()
+
+    if 'apagar' in request.GET:
+        apagarcliente(request, request.GET.get('id_cliente'))
+
+        return redirect('clientes')
+
     return render(request, 'calendario/clientes/clientes.html', {'clientes':clientes})
 
     

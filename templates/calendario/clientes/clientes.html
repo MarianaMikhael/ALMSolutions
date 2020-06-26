@@ -30,7 +30,9 @@
                 <td>{{ cliente.email }}</td>
                 <td>{{ cliente.celular }}</td>
                 <td><a href="{% url 'atualizacliente' cliente.id_cliente %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
-                <td><a href="{% url 'apagarcliente' cliente.id_cliente %}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                <td><a href="#" data-toggle="modal" data-target="#apagar_cliente" data-url="{% url 'apagarcliente' cliente.id_cliente %}" data-nome="{{ cliente.nome }}" data-id_cliente="{{cliente.id_cliente}}">
+                        <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            
             </tr>
         </tbody>
         {% endfor %}
@@ -43,6 +45,9 @@
 
     <!--Seta Topo-->
     {% include 'includes/seta-topo.html' %}
+
+    <!--Modal de Exclusão-->
+    {% include 'includes/modal_apagar.html' %}
 
 </div><!--/content-page-->
 {% endblock %}

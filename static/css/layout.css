@@ -70,11 +70,9 @@ b {
   bottom: 90px;
 } */
 
-#novo-evento {
-  bottom: 50px;
-}
-
-#novo-cliente {
+#novo-evento,
+#novo-cliente,
+#novo-fornecedor {
   bottom: 50px;
 }
 

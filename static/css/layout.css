@@ -74,6 +74,10 @@ b {
   bottom: 50px;
 }
 
+#novo-cliente {
+  bottom: 50px;
+}
+
 
 /*------------------------------------------Navbar------------------------------------------*/
 
@@ -210,4 +214,14 @@ i.fa-trash {
 
 .row-striped {
     padding: 15px 0;
+}
+
+/*----------------------------------------Clients List---------------------------------------*/
+i.fa-pencil-square-o {
+  color: #0033FF;
+  font-size: 24px;
+}
+
+table#client_table {
+  text-align: center;
 }

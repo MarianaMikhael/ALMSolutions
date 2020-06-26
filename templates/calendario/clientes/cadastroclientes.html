@@ -1,29 +1,58 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% load static %}
+{% load widget_tweaks %}
 
 
 {% block title %}
-    ALMSolutions | Clientes
+    ALMSolutions | Cliente
 {% endblock %}
 
 
 {% block main %}
-<div class="container-sm" id="content-page">
-    <center>
-        Cadastro Clientes
-        <form method="POST">
-            {% csrf_token %}
-            {{form}}
-            <button type="submit"> Salvar </button>
-        </form>
-    
-    
-        {% if cliente %}
-            <a href="{% url 'apagarcliente' cliente.id_cliente %}"> 
-                <button>Apagar Cliente</button>
-            </a>
-        {% endif %}
-    </center>
+
+    <form method="POST" id="form_create_event" class="mx-auto">
+        {% csrf_token %}
+        <div class="container">
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="nome">Nome: </label>
+                        {{ form.nome | attr:'class:form-control' }}
+                </div>
+                <div class="col-md-8">
+                    <label for="sobrenome">Sobrenome: </label>
+                        {{ form.sobrenome | attr:'class:form-control' }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <label for="email">E-mail: </label>
+                        {{ form.email | attr:'class:form-control' }}
+                </div>
+                <div class="col-md-4">
+                    <label for="celular">Celular: </label>
+                        {{ form.celular | attr:'class:form-control' }}
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-sm" id="create-event" align="right">
+                    <button class="btn btn-success text-uppercase" type="submit" value="Salvar">salvar</button>
+                </div>
+                <div class="col-sm" id="create-return" align="left">
+                    <a href="{% url 'clientes' %}" class="btn btn-primary text-uppercase">voltar</a>
+                </div>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+    </form>
+
 </div><!--/content-page-->
 {% endblock %}

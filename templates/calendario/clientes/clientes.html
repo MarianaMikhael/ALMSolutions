@@ -10,55 +10,39 @@
 
 {% block main %}
 <div class="container-sm" id="content-page">
+    
+    <table class="table table-hover" id="client_table">
+        <thead>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>Email</th>
+            <th>Telefone</th>
 
-    <center>
-        <h1>
-            Clientes
-        </h1>
-            
-    
-            <a href="{% url 'cadastrocliente'%}">
-                <button> Adicionar </button>
-            </a>
-    
-            <table border="1">
-                <tr>
-                    <td>        
-                        Nome
-                    </td>
-                    <td>
-                        Sobrenome
-                    </td>
-                    <td>
-                        E-mail            
-                    </td>
-                    <td>
-                        Telefone 
-                    </td>
-                </tr>
-                {% for cliente in clientes %}     
-                <tr>
-                    <td>        
-                        {{ cliente.nome}}
-                    </td>
-                    <td>
-                        {{ cliente.sobrenome}} 
-                    </td>
-                    <td>
-                        {{ cliente.email}}
-                    </td>
-                    <td>
-                        {{ cliente.celular}} 
-                    </td>
-                    <td>
-                    <a href="{% url 'atualizacliente' cliente.id_cliente %}">
-                        <button>Editar</button> 
-                    </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-    </center>
+            <th>Editar</th>
+            <th>Deletar</th>
+        </thead>
+
+        {% for cliente in clientes %} 
+        <tbody>
+            <tr>
+                <td>{{ cliente.nome }}</td>
+                <td>{{ cliente.sobrenome }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.celular }}</td>
+                <td><a href="{% url 'atualizacliente' cliente.id_cliente %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                <td><a href="{% url 'apagarcliente' cliente.id_cliente %}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+                
+    <!--Botão de Cadastro-->
+    <a href="{% url 'cadastrocliente' %}" class="btn-float" id="novo-cliente">
+        <i class="fa fa-plus"></i>
+    </a>
+
+    <!--Seta Topo-->
+    {% include 'includes/seta-topo.html' %}
 
 </div><!--/content-page-->
 {% endblock %}

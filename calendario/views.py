@@ -8,8 +8,17 @@ from .forms.forms import fornecedorForm, clienteForm
 
 def fornecedores(request):
     fornecedores = t_fornecedor.objects.all()
+
+    if 'apagar' in request.GET:
+        id = request.GET.get('id_fornecedor')
+        fornecedor = t_fornecedor.objects.get(id_fornecedor=id)
+        fornecedor.delete()
+
+        return redirect('fornecedores')
+
     return render(request, 'calendario/fornecedores/fornecedores.html', {'fornecedores':fornecedores})
 
+    
 def cadastrofornecedor(request):
     form = fornecedorForm(request.POST or None)
 
@@ -31,22 +40,13 @@ def atualizafornecedor(request, id):
     return render(request, 'calendario/fornecedores/cadastrofornecedores.html', {'form':form, 'fornecedor': fornecedor})
 
 
-def apagarfornecedor(request, id):
-    fornecedor = t_fornecedor.objects.get(id_fornecedor=id)
-
-    if request.method == "POST":
-        fornecedor.delete()
-        return redirect('fornecedores')
-
-    return render(request, 'calendario/fornecedores/apagarfornecedor.html', {'fornecedor':fornecedor})
-
-
-
 def clientes(request):
     clientes = t_cliente.objects.all()
 
     if 'apagar' in request.GET:
-        apagarcliente(request, request.GET.get('id_cliente'))
+        id = request.GET.get('id_cliente')
+        cliente = t_cliente.objects.get(id_cliente=id)
+        cliente.delete()
 
         return redirect('clientes')
 
@@ -72,13 +72,3 @@ def atualizacliente(request, id):
         return redirect('clientes')
 
     return render(request, 'calendario/clientes/cadastroclientes.html', {'form':form, 'cliente': cliente})
-
-
-def apagarcliente(request, id):
-    cliente = t_cliente.objects.get(id_cliente=id)
-
-    if request.method == "POST":
-        cliente.delete()
-        return redirect('clientes')
-
-    return render(request, 'calendario/clientes/apagarcliente.html', {'cliente':cliente})

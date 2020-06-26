@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    ALMSolutions | Clientes
+    ALMSolutions | Fornecedores
 {% endblock %}
 
 
@@ -28,12 +28,16 @@
                 <td>{{ fornecedor.nome }}</td>
                 <td>{{ fornecedor.sobrenome }}</td>
                 <td>{{ fornecedor.email }}</td>
-                <td>{{ fornecedor.celular }}</td>
+                <td>{{ form.celular }}</td>
                 <td><a href="{% url 'atualizafornecedor' fornecedor.id_fornecedor %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
-                <td><a href="{% url 'apagarfornecedor' fornecedor.id_fornecedor %}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                <td><a href="#" data-toggle="modal" data-target="#apagar_fornecedor" data-nome="{{ fornecedor.nome }}" data-id_fornecedor="{{fornecedor.id_fornecedor}}">
+                    <i class="fa fa-trash" aria-hidden="true"></i></a></td>
 
             </tr>
-        </tbody>
+            
+            <script src="{% static 'js/telefone.js' %}"></script>
+        
+            </tbody>
         {% endfor %}
     </table>
                 
@@ -46,7 +50,10 @@
     {% include 'includes/seta-topo.html' %}
 
     <!--Modal de Exclusão-->
+    {% include 'includes/modal_apagar_fornecedor.html' %}
 
 
 </div><!--/content-page-->
+
+
 {% endblock %}

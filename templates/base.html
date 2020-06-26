@@ -53,7 +53,9 @@
         <div class="container-fluid">
             <a href="#" class="navbar-brand">
                 <!-- Logo Image -->
-                <img src="{% static 'images/logoValeVerde.png' %}" width="100" height="95" alt="logo" class="d-inline-block align-middle mr-2">
+                <span class="logo">
+                    <img src="{% static 'images/logoValeVerde.png' %}" alt="logo" class="block-img">
+                </span>
             </a>
         </div>
   
@@ -61,7 +63,7 @@
   
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="{% url 'events_list' %}" class="nav-link"><strong>eventos</strong><span class="sr-only">(current)</span></a></li>
+                <li class="nav-item active"><a href="{% url 'events_list' %}" class="nav-link">eventos<span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a href="{% url 'clientes' %}" class="nav-link">clientes</a></li>
                 <li class="nav-item"><a href="{% url 'fornecedores' %}" class="nav-link">fornecedores</a></li>
             </ul>

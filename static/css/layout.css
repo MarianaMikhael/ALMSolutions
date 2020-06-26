@@ -80,9 +80,11 @@ b {
 
 
 /*------------------------------------------Navbar------------------------------------------*/
+nav#navbar-default {
+  background-color: rgba(27, 38, 49, 0.7);
+}
 
 nav#navbar-default a {
-  color: #0033FF;
   font-size: 18px;
   margin: 0 0 0 5px;
   text-transform: uppercase;
@@ -98,6 +100,21 @@ nav#navbar-default a {
   background: none;
 }
 
+span.logo {
+  background-color: white;
+  display: block;
+  width: 70px;
+  height: 68px;
+  right: 10%;
+  line-height: 44px;
+  border-radius: 50%;
+}
+
+img.block-img {
+  width: 80px;
+  height: 75px;
+  margin: -5% 0 0 -6%;
+}
 
 /*------------------------------------Container Page-Into-----------------------------------*/
 #content-page {

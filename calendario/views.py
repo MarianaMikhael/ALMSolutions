@@ -8,7 +8,13 @@ from .forms.forms import fornecedorForm, clienteForm
 
 def fornecedores(request):
     fornecedores = t_fornecedor.objects.all()
-
+    form = fornecedorForm(request.POST or None)
+    
+    if 'criar' in request.POST:
+        if form.is_valid():
+            form.save()
+            return redirect('fornecedores')
+    
     if 'apagar' in request.GET:
         id = request.GET.get('id_fornecedor')
         fornecedor = t_fornecedor.objects.get(id_fornecedor=id)
@@ -16,7 +22,7 @@ def fornecedores(request):
 
         return redirect('fornecedores')
 
-    return render(request, 'calendario/fornecedores/fornecedores.html', {'fornecedores':fornecedores})
+    return render(request, 'calendario/fornecedores/fornecedores.html', {'fornecedores':fornecedores, 'form': form})
 
     
 def cadastrofornecedor(request):

@@ -4,11 +4,13 @@
 
 
 {% block title %}
-    ALMSolutions | Fornecedores
+    ALMSolutions | Clientes
 {% endblock %}
 
 
 {% block main %}
+<script src="{% static 'js/telefone.js' %}"></script>
+
 <div class="container-sm" id="content-page">
     
     <table class="table table-hover" id="client_table">
@@ -28,32 +30,31 @@
                 <td>{{ fornecedor.nome }}</td>
                 <td>{{ fornecedor.sobrenome }}</td>
                 <td>{{ fornecedor.email }}</td>
-                <td>{{ form.celular }}</td>
+                <td>{{ fornecedor.celular }}</td>
                 <td><a href="{% url 'atualizafornecedor' fornecedor.id_fornecedor %}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
                 <td><a href="#" data-toggle="modal" data-target="#apagar_fornecedor" data-nome="{{ fornecedor.nome }}" data-id_fornecedor="{{fornecedor.id_fornecedor}}">
                     <i class="fa fa-trash" aria-hidden="true"></i></a></td>
 
             </tr>
-            
-            <script src="{% static 'js/telefone.js' %}"></script>
-        
-            </tbody>
+        </tbody>
         {% endfor %}
     </table>
                 
     <!--Botão de Cadastro-->
-    <a href="{% url 'cadastrofornecedor' %}" class="btn-float" id="novo-fornecedor">
+    <a href="#" class="btn-float" id="novo-fornecedor" data-target="#cadastrar_fornecedor" data-toggle="modal">
         <i class="fa fa-plus"></i>
     </a>
 
     <!--Seta Topo-->
     {% include 'includes/seta-topo.html' %}
 
-    <!--Modal de Exclusão-->
+    <!--Modal de Criação-->
+    {% include 'includes/modal_fornecedor.html' %}
+
+     <!--Modal de Exclusão-->
     {% include 'includes/modal_apagar_fornecedor.html' %}
 
 
+
 </div><!--/content-page-->
-
-
 {% endblock %}
